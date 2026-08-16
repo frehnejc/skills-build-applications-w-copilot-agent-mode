@@ -1,8 +1,13 @@
-import { apiUrl } from '../config/api';
 import { useApiCollection } from '../hooks/useApiCollection';
 
+// VITE_CODESPACE_NAME must be defined (e.g. in .env.local); falls back to localhost otherwise.
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const workoutsUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/workouts/`
+  : 'http://localhost:8000/api/workouts/';
+
 function Workouts() {
-  const { items: workouts, loading, error } = useApiCollection(apiUrl('workouts'));
+  const { items: workouts, loading, error } = useApiCollection(workoutsUrl);
 
   if (loading) return <p>Loading workouts...</p>;
   if (error) return <p className="text-danger">Error loading workouts: {error}</p>;

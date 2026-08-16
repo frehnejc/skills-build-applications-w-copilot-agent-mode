@@ -1,8 +1,13 @@
-import { apiUrl } from '../config/api';
 import { useApiCollection } from '../hooks/useApiCollection';
 
+// VITE_CODESPACE_NAME must be defined (e.g. in .env.local); falls back to localhost otherwise.
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const leaderboardUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/leaderboard/`
+  : 'http://localhost:8000/api/leaderboard/';
+
 function Leaderboard() {
-  const { items: entries, loading, error } = useApiCollection(apiUrl('leaderboard'));
+  const { items: entries, loading, error } = useApiCollection(leaderboardUrl);
 
   if (loading) return <p>Loading leaderboard...</p>;
   if (error) return <p className="text-danger">Error loading leaderboard: {error}</p>;
